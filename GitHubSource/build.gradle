@@ -2,14 +2,8 @@
  * Copyright (c) 2018.
  * Created by Josua Lengwenath
  */
-
-plugins {
-    id 'base'
-    id 'maven'
-    id 'com.github.dcendents.android-maven'
-}
-
 apply plugin: 'base'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.android.library'
 
 group = 'com.github.DerTyp7214'
@@ -21,7 +15,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "2.1"
+        versionName "2.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

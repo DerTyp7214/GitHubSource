@@ -14,16 +14,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +29,7 @@ import com.dertyp7214.githubsource.github.File;
 import com.dertyp7214.githubsource.github.Repository;
 import com.dertyp7214.githubsource.helpers.ColorStyle;
 import com.dertyp7214.githubsource.helpers.DefaultColorStyle;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +37,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -80,11 +81,11 @@ public class MainScreen extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this::presentActivity);
         fab.setBackgroundTintList(ColorStateList.valueOf(colorStyle.getAccentColor()));
-        fab.setColorFilter(isColorBright(colorStyle.getAccentColor())?Color.BLACK:Color.WHITE);
+        fab.setColorFilter(isColorBright(colorStyle.getAccentColor()) ? Color.BLACK : Color.WHITE);
 
         repository = GitHubSource.repository;
 
-        if(!repository.hasCalls()){
+        if (! repository.hasCalls()) {
             new MaterialDialog.Builder(this)
                     .title("Error")
                     .content(repository.getMessage())
@@ -114,10 +115,10 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    public void setToolbarIconColor(@ColorInt int toolbarColor, Toolbar toolbar){
+    public void setToolbarIconColor(@ColorInt int toolbarColor, Toolbar toolbar) {
         int tintColor = isColorBright(toolbarColor) ? Color.BLACK : Color.WHITE;
         toolbar.setBackgroundColor(toolbarColor);
-        for(ImageView imageButton : findChildrenByClass(ImageView.class, toolbar)) {
+        for (ImageView imageButton : findChildrenByClass(ImageView.class, toolbar)) {
             Drawable drawable = imageButton.getDrawable();
             drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_ATOP);
             imageButton.setImageDrawable(drawable);
@@ -128,8 +129,10 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    public static boolean isColorBright(int color){
-        double darkness = 1-(0.299*Color.red(color) + 0.587*Color.green(color) + 0.114*Color.blue(color))/255;
+    public static boolean isColorBright(int color) {
+        double darkness = 1 -
+                (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
+                        / 255;
         return darkness < 0.5;
     }
 
@@ -151,7 +154,8 @@ public class MainScreen extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS) {
             for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
                     finish();
                 }
             }
@@ -195,7 +199,7 @@ public class MainScreen extends AppCompatActivity {
 
         if (id == R.id.action_close_all) {
             Collections.reverse(activities);
-            for(Activity activity : activities)
+            for (Activity activity : activities)
                 activity.finish();
             return true;
         } else if (id == R.id.action_share) {
@@ -213,7 +217,8 @@ public class MainScreen extends AppCompatActivity {
                     .negativeText(R.string.current_path)
                     .onNegative((dialog, which) -> {
                         sendIntent.putExtra(Intent.EXTRA_TEXT, repository.getCurrentUrl());
-                        startActivity(Intent.createChooser(sendIntent, getString(R.string.current_path)));
+                        startActivity(
+                                Intent.createChooser(sendIntent, getString(R.string.current_path)));
                     })
                     .show();
             return true;
@@ -237,18 +242,17 @@ public class MainScreen extends AppCompatActivity {
 
     private <V extends View> Collection<V> findChildrenByClass(Class<V> clazz, ViewGroup... viewGroups) {
         Collection<V> collection = new ArrayList<>();
-        for(ViewGroup viewGroup : viewGroups)
+        for (ViewGroup viewGroup : viewGroups)
             collection.addAll(gatherChildrenByClass(viewGroup, clazz, new ArrayList<>()));
         return collection;
     }
 
     private <V extends View> Collection<V> gatherChildrenByClass(ViewGroup viewGroup, Class<V> clazz, Collection<V> childrenFound) {
 
-        for (int i = 0; i < viewGroup.getChildCount(); i++)
-        {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             final View child = viewGroup.getChildAt(i);
             if (clazz.isAssignableFrom(child.getClass())) {
-                childrenFound.add((V)child);
+                childrenFound.add((V) child);
             }
             if (child instanceof ViewGroup) {
                 gatherChildrenByClass((ViewGroup) child, clazz, childrenFound);

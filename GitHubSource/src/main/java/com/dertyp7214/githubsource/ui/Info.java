@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
@@ -32,6 +30,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import static com.dertyp7214.githubsource.github.Repository.api_key;
 
@@ -93,12 +94,14 @@ public class Info extends AppCompatActivity {
         cardGraphql.setCardBackgroundColor(colorStyle.getPrimaryColorDark());
 
         for (TextView textView : textViewList)
-            textView.setTextColor(isColorBright(colorStyle.getPrimaryColorDark())?Color.BLACK:Color.WHITE);
+            textView.setTextColor(
+                    isColorBright(colorStyle.getPrimaryColorDark()) ? Color.BLACK : Color.WHITE);
 
         loadJSON();
 
         getWindow().setNavigationBarColor(colorStyle.getPrimaryColor());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isColorBright(getWindow().getNavigationBarColor())) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isColorBright(
+                getWindow().getNavigationBarColor())) {
             core.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
 
@@ -113,33 +116,40 @@ public class Info extends AppCompatActivity {
 
             ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
             if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        revealActivity(revealX, revealY);
-                        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
+                viewTreeObserver
+                        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                revealActivity(revealX, revealY);
+                                rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+                        });
             }
         } else {
             rootLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    private void loadJSON(){
+    private void loadJSON() {
         new Thread(() -> {
             try {
-                JSONObject jsonObject = new JSONObject(getJSONObject("https://api.github.com/rate_limit"));
+                JSONObject jsonObject =
+                        new JSONObject(getJSONObject("https://api.github.com/rate_limit"));
                 JSONObject resources = jsonObject.getJSONObject("resources");
                 JSONObject coreJSON = resources.getJSONObject("core");
                 JSONObject searchJSON = resources.getJSONObject("search");
                 JSONObject graphqlJSON = resources.getJSONObject("graphql");
-                String coreRemaining = coreJSON.getString("remaining") + "/" + coreJSON.getString("limit");
-                String searchRemaining = searchJSON.getString("remaining") + "/" + searchJSON.getString("limit");
-                String graphqlRemaining = graphqlJSON.getString("remaining") + "/" + graphqlJSON.getString("limit");
-                String coreRemainingTime = new Date(coreJSON.getLong("reset")*1000).toString();
-                String searchRemainingTime = new Date(searchJSON.getLong("reset")*1000).toString();
-                String graphqlRemainingTime = new Date(graphqlJSON.getLong("reset")*1000).toString();
+                String coreRemaining =
+                        coreJSON.getString("remaining") + "/" + coreJSON.getString("limit");
+                String searchRemaining =
+                        searchJSON.getString("remaining") + "/" + searchJSON.getString("limit");
+                String graphqlRemaining =
+                        graphqlJSON.getString("remaining") + "/" + graphqlJSON.getString("limit");
+                String coreRemainingTime = new Date(coreJSON.getLong("reset") * 1000).toString();
+                String searchRemainingTime =
+                        new Date(searchJSON.getLong("reset") * 1000).toString();
+                String graphqlRemainingTime =
+                        new Date(graphqlJSON.getLong("reset") * 1000).toString();
                 runOnUiThread(() -> {
                     core.setText(coreRemaining);
                     search.setText(searchRemaining);
@@ -154,8 +164,10 @@ public class Info extends AppCompatActivity {
         }).start();
     }
 
-    public static boolean isColorBright(int color){
-        double darkness = 1-(0.299*Color.red(color) + 0.587*Color.green(color) + 0.114*Color.blue(color))/255;
+    public static boolean isColorBright(int color) {
+        double darkness = 1 -
+                (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
+                        / 255;
         return darkness < 0.5;
     }
 
@@ -163,7 +175,8 @@ public class Info extends AppCompatActivity {
         float finalRadius = (float) (Math.max(rootLayout.getWidth(), rootLayout.getHeight()) * 1.1);
 
         // create the animator for this view (the start radius is zero)
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout, x, y, 0, finalRadius);
+        Animator circularReveal =
+                ViewAnimationUtils.createCircularReveal(rootLayout, x, y, 0, finalRadius);
         circularReveal.setDuration(400);
         circularReveal.setInterpolator(new AccelerateInterpolator());
 
@@ -172,14 +185,14 @@ public class Info extends AppCompatActivity {
         circularReveal.start();
     }
 
-    private String getJSONObject(String url){
+    private String getJSONObject(String url) {
         try {
             URL web = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) web.openConnection();
-            connection.setRequestProperty("Authorization", "token "+api_key);
+            connection.setRequestProperty("Authorization", "token " + api_key);
             BufferedReader in;
 
-            if(api_key==null || api_key.equals(""))
+            if (api_key == null || api_key.equals(""))
                 in = new BufferedReader(new InputStreamReader(web.openStream()));
             else
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));

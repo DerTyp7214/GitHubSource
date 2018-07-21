@@ -5,7 +5,7 @@
 
 package com.dertyp7214.githubsource.helpers;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 public class ColorStyle {
 

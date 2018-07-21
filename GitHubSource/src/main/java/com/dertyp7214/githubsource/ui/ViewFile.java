@@ -8,7 +8,6 @@ package com.dertyp7214.githubsource.ui;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -29,6 +28,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.dertyp7214.githubsource.github.Repository.api_key;
 import static com.dertyp7214.githubsource.styles.Css.getMarkDownStyle;
