@@ -3,10 +3,8 @@
  * Created by Josua Lengwenath
  */
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.github.DerTyp7214'
+group='com.github.DerTyp7214'
 
 android {
     compileSdkVersion 27
@@ -15,7 +13,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "2.7"
+        versionName "2.8"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
