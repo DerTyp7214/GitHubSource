@@ -7,6 +7,7 @@ package com.dertyp7214.githubsource;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.dertyp7214.githubsource.github.Repository;
@@ -21,15 +22,15 @@ public class GitHubSource {
     @SuppressLint("StaticFieldLeak")
     private static GitHubSource instance;
 
-    private Activity activity;
+    private Context activity;
 
-    private GitHubSource(Activity activity, Repository repo){
+    private GitHubSource(Context activity, Repository repo){
         this.activity=activity;
         repository = repo;
         instance=this;
     }
 
-    public static GitHubSource getInstance(Activity activity, Repository repo){
+    public static GitHubSource getInstance(Context activity, Repository repo){
         if(instance==null)
             new GitHubSource(activity, repo);
         repository = repo;

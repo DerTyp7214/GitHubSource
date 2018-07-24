@@ -50,7 +50,7 @@ import java.util.Objects;
 public class MainScreen extends AppCompatActivity {
 
     private int PERMISSIONS = 7214;
-    private Repository repository;
+    private static Repository repository;
     private List<File> files = new ArrayList<>();
     private FileAdapter fileAdapter;
     private static List<Activity> activities = new ArrayList<>();
@@ -84,7 +84,7 @@ public class MainScreen extends AppCompatActivity {
 
         repository = GitHubSource.repository;
 
-        if (! repository.hasCalls()) {
+        if (repository == null || ! repository.hasCalls()) {
             new MaterialDialog.Builder(this)
                     .title("Error")
                     .content(repository.getMessage())
