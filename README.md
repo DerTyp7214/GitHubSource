@@ -12,7 +12,7 @@ usage
 new Thread(() -> {
         GitHubSource.getInstance(
                 Activity,
-                new Repository(User, Repo, API_KEY)
+                new Repository(User, Repo, API_KEY{can be null})
         ).setColorStyle(new ColorStyle(
                 PrimaryColor,
                 PrimaryDarkColor,
